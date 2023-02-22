@@ -183,6 +183,8 @@ class Plane(object):
 		forward_direction = self.body.GetWorldVector((0, 1))  # Normalized by default
 		# Yes, we could use atan2 like in takeoff,
 		# but dot/cross is more clear and convenient here from my point of view
+		if is_evade:
+			future_target_direction = -future_target_direction
 		future_dot = forward_direction.dot(future_target_direction)
 		future_cross = forward_direction.cross(future_target_direction)
 		# Scale dot to [0, 1], where 0 - same direction, 1 - opposite direction
@@ -193,8 +195,6 @@ class Plane(object):
 			angular_coefficient = -future_scaled_dot
 		else:
 			angular_coefficient = 0
-		if is_evade:
-			angular_coefficient = -angular_coefficient
 		if min_max_distance is not None:
 			if is_evade:
 				if target_distance > min_max_distance:
